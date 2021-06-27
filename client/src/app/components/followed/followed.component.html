@@ -1,0 +1,93 @@
+<div class="col-lg-8">
+    <h1 class="h1-strong">{{ title }} {{ user.name }}</h1>
+    <div class="users" *ngIf="followed">
+        <div *ngFor="let follow of followed" class="item-user">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="image-user pull-left">
+                        <a href="#">
+                            <img
+                                src="{{
+                                    url +
+                                        'get-image-user/' +
+                                        follow.user.image
+                                }}"
+                                *ngIf="follow.user.image"
+                            />
+                            <img
+                                class="avatar-default"
+                                src="assets/user.png"
+                                *ngIf="!follow.user.image"
+                            />
+                        </a>
+                    </div>
+                    <div class="user-name pull-left">
+                        <p class="name-surname">
+                            <a [routerLink]="['/profile', follow.user._id]">
+                                {{
+                                    follow.user.name +
+                                        " " +
+                                        follow.user.surname
+                                }}
+                            </a>
+                        </p>
+                        <p class="nickname">{{ follow.user.nick }}</p>
+                    </div>
+                    <!-- add buttons to follow/unfollow -->k
+                    <div
+                        class="pull-right"
+                        *ngIf="follow.user._id !== identity._id"
+                    >
+                        <button
+                            class="btn btn-success"
+                            *ngIf="follows.indexOf(follow.user._id) < 0"
+                            (click)="followUser(follow.user._id)"
+                        >
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            Follow
+                        </button>
+                        <button
+                            class="btn btn-primary"
+                            *ngIf="follows.indexOf(follow.user._id) >= 0"
+                            (mouseenter)="mouseEnter(follow.user._id)"
+                            (mouseleave)="mouseLeave(follow.user._id)"
+                            (click)="unfollowUser(follow.user._id)"
+                            [class.btn-danger]="
+                                follow.user._id === followUserOver
+                            "
+                        >
+                            <span
+                                *ngIf="
+                                    follow.user._id == followUserOver;
+                                    else following
+                                "
+                            >
+                                <span
+                                    class="glyphicon glyphicon-ok-sign"
+                                ></span>
+                                Unfollowing
+                            </span>
+                            <ng-template #following>
+                                <span
+                                    class="glyphicon glyphicon-minus-sign"
+                                ></span>
+                                Following
+                            </ng-template>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- pagination -->
+        <ul class="pagination pull-right">
+            <li *ngIf="page > 1">
+                <a [routerLink]="['/followed', userPageId, prevPage]">Prev</a>
+            </li>
+            <li *ngIf="pages !== page">
+                <a [routerLink]="['/followed', userPageId, nextPage]">Next</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<sidebar></sidebar>
+<div class="clearfix"></div>

@@ -1,0 +1,96 @@
+<div class="col-lg-4 sidebar-32">
+    <h1 class="h1-strong">Welcome, {{ identity.name }}</h1>
+</div>
+
+<div id="user-card" class="col-lg-4 panel panel-default pull-left">
+    <div class="avatar pull-left">
+        <img
+            src="{{ url + 'get-image-user/' + identity.image }}"
+            *ngIf="identity.image"
+        />
+        <img src="assets/user.png" *ngIf="!identity.image" />
+    </div>
+
+    <div class="name-surname pull-left">
+        <a
+            class="user-name"
+            [routerLink]="['/profile', identity._id]"
+            class="username"
+        >
+            {{ identity.name + " " + identity.surname }}
+        </a>
+        <p class="nickname">{{ identity.nick }}</p>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="stats" *ngIf="stats">
+        <div class="following-data">
+            <a [routerLink]="['/following', identity._id, 1]">
+                <span class="label-stats"> Following </span>
+                <span class="number-stats">
+                    {{ stats.following }}
+                </span>
+            </a>
+        </div>
+        <div class="following-data">
+            <a [routerLink]="['/followed', identity._id, 1]">
+                <span class="label-stats"> Followers </span>
+                <span class="number-stats">
+                    {{ stats.followed }}
+                </span>
+            </a>
+        </div>
+        <div class="following-data">
+            <a [routerLink]="['/profile', identity._id]">
+                <span class="label-stats"> Publications </span>
+                <span class="number-stats">
+                    {{ stats.publications }}
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- publication form -->
+<div
+    id="new-publication"
+    class="col-lg-4 pull-left panel panel-default sidebar-32"
+>
+    <div class="alert alert-success" *ngIf="status === 'success'">
+        Publication was submitted successfully
+    </div>
+    <div class="alert alert-danger" *ngIf="status === 'error'">
+        Publication was not submitted successfully
+    </div>
+    <form
+        #newPubForm="ngForm"
+        (ngSubmit)="onSubmit(newPubForm, $event)"
+        class="col-lg-10"
+    >
+        <p>
+            <label>Say anything?</label>
+            <textarea
+                name="text"
+                #text="ngModel"
+                [(ngModel)]="publication.text"
+                class="form-control"
+                required
+            ></textarea>
+            <span *ngIf="!text.valid && text.touched">Required</span>
+        </p>
+        <p>
+            <label>Upload your photo</label>
+            <input
+                type="file"
+                placeholder="upload image"
+                (change)="fileChangeEvent($event)"
+            />
+        </p>
+        <input
+            type="submit"
+            value="Submit"
+            class="btn btn-success"
+            [disabled]="!newPubForm.valid"
+        />
+    </form>
+</div>

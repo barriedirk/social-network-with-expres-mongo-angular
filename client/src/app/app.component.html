@@ -1,0 +1,101 @@
+<div class="navigation col-lg-12">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="#" class="navbar-brand">
+                    {{ title }}
+                </a>
+            </div>
+            <ul class="nav navbar-nav navbar" *ngIf="identity">
+                <li>
+                    <a [routerLink]="['/home']" [routerLinkActive]="['active']">
+                        <span class="glyphicon glyphicon-home"></span>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a
+                        [routerLink]="['/timeline']"
+                        [routerLinkActive]="['active']"
+                    >
+                        <span class="glyphicon glyphicon-th-list"></span>
+                        Timeline
+                    </a>
+                </li>
+                <li>
+                    <a
+                        [routerLink]="['/users', 1]"
+                        [routerLinkActive]="['active']"
+                    >
+                        <span class="glyphicon glyphicon-user"></span>
+                        Users
+                    </a>
+                </li>
+                <li>
+                    <a
+                        [routerLink]="['/messages']"
+                        [routerLinkActive]="['active']"
+                    >
+                        <span class="glyphicon glyphicon-envelope"></span>
+                        Messages
+                    </a>
+                </li>
+
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right" *ngIf="!identity">
+                <li>
+                    <a
+                        [routerLink]="['/login']"
+                        [routerLinkActive]="['active']"
+                    >
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        Login
+                    </a>
+                </li>
+                <li>
+                    <a
+                        [routerLink]="['/register']"
+                        [routerLinkActive]="['active']"
+                    >
+                        <span class="glyphicon glyphicon-user"></span>
+                        Register
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" *ngIf="identity">
+                <li class="avatar" *ngIf="identity.image">
+                    <img src="{{ url + 'get-image-user/' + identity.image }}" />
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        {{ identity.name }} <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a [routerLink]="['/profile', identity._id]">
+                                <span class="glyphicon glyphicon-user"></span>
+                                My profile
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/user-edit']">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                My information
+                            </a>
+                        </li>
+                        <li>
+                            <a class="pointer" (click)="logout()">
+                                <span
+                                    class="glyphicon glyphicon-log-out"
+                                ></span>
+                                Log out
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<router-outlet></router-outlet>

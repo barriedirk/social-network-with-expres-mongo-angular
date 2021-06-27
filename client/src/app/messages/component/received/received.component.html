@@ -1,0 +1,65 @@
+<div class="col-lg-10">
+    <h3>{{ title }}</h3>
+
+    <div class="users" *ngIf="messages">
+        <div *ngFor="let message of messages" class="item-user">
+            <div class="panel panel-default" *ngIf="message.emitter">
+                <div class="panel-body">
+                    <div class="image-user pull-left">
+                        <a href="#">
+                            <img
+                                src="{{
+                                    url +
+                                        'get-image-user/' +
+                                        message.emitter.image
+                                }}"
+                                *ngIf="message.emitter.image"
+                            />
+                            <img
+                                class="avatar-default"
+                                src="assets/user.png"
+                                *ngIf="!message.emitter.image"
+                            />
+                        </a>
+                    </div>
+                    <div class="user-name pull-left">
+                        <p class="name-surname">
+                            <a [routerLink]="['/profile', message.emitter._id]">
+                                {{
+                                    message.emitter.name +
+                                        " " +
+                                        message.emitter.surname
+                                }}
+                            </a>
+                            &nbsp;|&nbsp;
+                            <span class="nickname">{{
+                                message.emitter.nick
+                            }}</span>
+                            &nbsp;|&nbsp;
+                            <span class="date nickname">
+                                {{
+                                    message.created_at
+                                        | amFromUnix
+                                        | amLocal: "es"
+                                        | amTimeAgo
+                                }}
+                            </span>
+                        </p>
+                        <div>
+                            {{ message.text }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- pagination -->
+        <ul class="pagination pull-right">
+            <li *ngIf="page > 1">
+                <a [routerLink]="['/messages/received', prevPage]">Prev</a>
+            </li>
+            <li *ngIf="pages !== page">
+                <a [routerLink]="['/messages/received', nextPage]">Next</a>
+            </li>
+        </ul>
+    </div>
+</div>

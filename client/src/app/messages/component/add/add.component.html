@@ -1,0 +1,51 @@
+<div class="col-lg-10">
+    <h3>{{ title }}</h3>
+
+    <div class="alert alert-success" *ngIf="status === 'success'">
+        The message have been sending, see in your <a [routerLink]="['/messages/sended']">sended carpet</a>.
+    </div>
+    <div class="alert alert-danger" *ngIf="status === 'error'">
+        The submit was failured. Please, try again later
+    </div>
+
+    <form #formAdd="ngForm" (ngSubmit)="onSubmit(formAdd)">
+        <p>
+            <label>For:</label>
+            <!-- user list -->
+            <select
+                *ngIf="follows"
+                name="receiver"
+                #receiver="ngModel"
+                [(ngModel)]="message.receiver"
+                class="form-control"
+                required
+            >
+                <option
+                    *ngFor="let follow of follows"
+                    value="{{ follow.user._id }}"
+                >
+                    {{
+                        follow.user.name +
+                            " " +
+                            follow.user.surname +
+                            " (" +
+                            follow.user.nick +
+                            ")"
+                    }}
+                </option>
+            </select>
+        </p>
+        <p>
+            <label>Message:</label>
+            <textarea
+                name="text"
+                #text="ngModel"
+                [(ngModel)]="message.text"
+                class="form-control"
+                required
+            ></textarea>
+            <span *ngIf="!text.valid && text.touched"> Required </span>
+        </p>
+        <input [disabled]="!formAdd.valid" type="submit" value="{{ title }}" class="btn btn-success" />
+    </form>
+</div>
